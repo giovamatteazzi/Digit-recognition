@@ -185,47 +185,26 @@ np.save(DATA_DIR / "accs_aug2.npy", accs_epochs)
 np.save(DATA_DIR / "train_accuracy_aug2.npy", train_accs_epoch)
 
 
-accs = np.load(DATA_DIR / "accs2.npy")
-accs_train = np.load(DATA_DIR / "train_accuracy.npy")
 accs_aug1 = np.load(DATA_DIR / "accs_aug1.npy")
 accs_aug_train1 = np.load(DATA_DIR / "train_accuracy_aug1.npy")
-accs_aug2 = np.load(DATA_DIR / "accs_aug2.npy")
-accs_aug_train2 = np.load(DATA_DIR / "train_accuracy_aug2.npy")
-
-
-gap = np.subtract(accs_train, accs)
-gap_aug1 = np.subtract(accs_aug_train1, accs_aug1)
-gap_aug2 = np.subtract(accs_aug_train2, accs_aug2)
 
 plt.figure()
-plt.title("Generalization gap")
+plt.title("Augmentation")
 plt.xlabel("epoch")
-plt.ylabel("gap")
+plt.ylabel("accuracy")
 
-sum_gap = np.nansum(gap)
-sum_gap_aug1 = np.nansum(gap_aug1)
-sum_gap_aug2 = np.nansum(gap_aug2)
 
-y = gap
-valid = ~np.isnan(y)
-y=y[valid]
-x = np.arange(1, len(y)+1)
-plt.plot(x, y, 'y-')
-print(f"gap no aug: {sum_gap}")
-
-y = gap_aug1
-valid = ~np.isnan(y)
-y=y[valid]
-x = np.arange(1, len(y)+1)
-plt.plot(x, y, 'g-')
-print(f"gap aug1: {sum_gap_aug1}")
-
-y = gap_aug2
+y = accs_aug1
 valid = ~np.isnan(y)
 y=y[valid]
 x = np.arange(1, len(y)+1)
 plt.plot(x, y, 'b-')
-print(f"gap aug2: {sum_gap_aug2}")
+
+y = accs_aug_train1
+valid = ~np.isnan(y)
+y=y[valid]
+x = np.arange(1, len(y)+1)
+plt.plot(x, y, 'g-')
 
 plt.grid()
 plt.savefig(PLOTS_DIR / "augmentation.png", dpi=300)
